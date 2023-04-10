@@ -20,33 +20,74 @@ def creeCube(n, m):
 #         #saut de ligne
 #         print(" ")
 
-def coloration(matrice):
+# def coloration(matrice):
+#     n = len(matrice)
+#     m = len(matrice[0])
+
+#     for i in range(n):
+#         for j in range(m):
+            
+#             if (j > m//2):
+#                 # k -= 1
+#                 if (matrice[n-1][j] == 1):
+#                     print('\u25a1', end=" ")
+#             else:
+#                 if matrice[i][j] == 1:
+#                     # ■
+#                     print('\u25a0', end=" ")
+#                     matrice[n-1][j] = 1
+#                 else:
+#                     # □
+#                     print('\u25a1', end=" ")
+
+#         print("")
+
+
+# def symetrieCube(matrice):
+#     n = len(matrice)
+#     midsize = len(matrice[0])//2
+
+#     for i in range(n):
+#         for j in range(midsize):
+#             print('\u25a1', end=" ")
+#         print("")
+
+def symetrie(matrice):
     n = len(matrice)
     m = len(matrice[0])
 
+    symetrie = [[0 for j in range(m)] for i in range(n)]
+
     for i in range(n):
         for j in range(m):
-            if (j < m//2):
-                print('\u25a1', end=" ")
+            if (j >= m//2):
+                symetrie[i][j] = matrice[i][m-j-1]
             else:
-                if matrice[i][j] == 1:
-                    # ■
-                    print('\u25a0', end=" ")
-                else:
-                    # □
-                    print('\u25a1', end=" ")
+                symetrie[i][j] = matrice[i][j]
 
-        print("")
+    return symetrie
 
+def coloration(matrice):
+    symetrique = symetrie(matrice)
+    n = len(symetrique)
+    m = len(symetrique[0])
 
-def symetrieCube(matrice):
-    n = len(matrice)
-    midsize = len(matrice[0])//2
+    # couleur possible; Vert; Jaune; Bleu; Magenta; Cyan
+    color = random.randint(31, 36)
+
+    vide = '■'
+    rempli = f"\033[{color}m■\033[37m"
 
     for i in range(n):
-        for j in range(midsize):
-            print('\u25a1', end=" ")
+        for j in range(m):
+            if symetrique[i][j] == 1:
+                # carré noir
+                print(rempli, end=" ")
+            else:
+                # carré blanc
+                print(vide, end=" ")
         print("")
+
 
 
 def main():
@@ -69,19 +110,8 @@ def main():
             else:
                 longueur += i
 
-        # if(int(longueur + largeur)%2 != 0):
-        #     print('Erreur, les dimension ne sont pas paire')
-        #     size = ''
-
-        # if(int(longueur) != int(largeur)):
-        #     size = ''
-        #     print('Erreur, les dimensions doivent être les mêmes')
-        
-        # print(f'L={longueur}; l={largeur}')
-
     cube = creeCube(int(longueur), int(largeur))
-    # printCube(cube)
     coloration(cube)
-    # symetrieCube(cube)
+
 
 main()
