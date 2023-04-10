@@ -1,5 +1,6 @@
 # Projet Identicon
-# v1.0 - Test
+# v1.1 - Test
+# Ne marche que sur les terminale qui inclu les caractère ANSI
 
 # import du module aléatoire
 import random
@@ -75,17 +76,17 @@ def coloration(matrice):
     # couleur possible; Vert; Jaune; Bleu; Magenta; Cyan
     color = random.randint(31, 36)
 
-    vide = '■'
-    rempli = f"\033[{color}m■\033[37m"
+    vide = '██'
+    rempli = f"\033[{color}m{vide}\033[37m"
 
     for i in range(n):
         for j in range(m):
             if symetrique[i][j] == 1:
-                # carré noir
-                print(rempli, end=" ")
+                # carré colorié
+                print(rempli, end="")
             else:
                 # carré blanc
-                print(vide, end=" ")
+                print(vide, end="")
         print("")
 
 
