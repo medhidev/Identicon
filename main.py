@@ -3,55 +3,12 @@
 # Ne marche que sur les terminale qui inclu les caractère ANSI
 
 # import du module aléatoire
+from PIL import Image, ImageDraw
 import random
 
 def creeCube(n, m):
     matrice = [[ random.randint(0, 1) for x in range(m)] for y in range(n)]
     return matrice
-
-# Pour les test
-# def printCube(matrice):
-#     n = len(matrice)
-#     m = len(matrice[0])
-
-#     for i in range(n):
-#         for j in range(m):
-#             print(matrice[i][j],end=" ")
-
-#         #saut de ligne
-#         print(" ")
-
-# def coloration(matrice):
-#     n = len(matrice)
-#     m = len(matrice[0])
-
-#     for i in range(n):
-#         for j in range(m):
-            
-#             if (j > m//2):
-#                 # k -= 1
-#                 if (matrice[n-1][j] == 1):
-#                     print('\u25a1', end=" ")
-#             else:
-#                 if matrice[i][j] == 1:
-#                     # ■
-#                     print('\u25a0', end=" ")
-#                     matrice[n-1][j] = 1
-#                 else:
-#                     # □
-#                     print('\u25a1', end=" ")
-
-#         print("")
-
-
-# def symetrieCube(matrice):
-#     n = len(matrice)
-#     midsize = len(matrice[0])//2
-
-#     for i in range(n):
-#         for j in range(midsize):
-#             print('\u25a1', end=" ")
-#         print("")
 
 def symetrie(matrice):
     n = len(matrice)
@@ -70,25 +27,30 @@ def symetrie(matrice):
 
 def coloration(matrice):
     symetrique = symetrie(matrice)
-    n = len(symetrique)
-    m = len(symetrique[0])
+    longeur = len(symetrique) # longeur
+    largeur = len(symetrique[0]) # largeur
+    image = Image.new("RGB", (longeur, largeur), "white")
+    draw = ImageDraw.Draw(image)
 
     # couleur possible; Vert; Jaune; Bleu; Magenta; Cyan
     color = random.randint(31, 36)
 
-    vide = '██'
-    rempli = f"\033[{color}m{vide}\033[37m"
+    carre = '██'
+    rempli = f"\033[{color}m{carre}\033[37m"
+    result = ''
 
-    for i in range(n):
-        for j in range(m):
+    for i in range(longeur):
+        if(i < longeur):
+            result += '\n'
+        for j in range(largeur):
             if symetrique[i][j] == 1:
-                # carré colorié
-                print(rempli, end="")
+                # carré colorie
+                result += rempli
             else:
                 # carré blanc
-                print(vide, end="")
-        print("")
+                result += carre
 
+    return image
 
 
 def main():
@@ -112,7 +74,11 @@ def main():
                 longueur += i
 
     cube = creeCube(int(longueur), int(largeur))
-    coloration(cube)
+    resultat = coloration(cube)
+    print(resultat)
 
+    fichier = open("data.txt", "a")
+    fichier.write(resultat)
+    fichier.close()
 
 main()
